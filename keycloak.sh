@@ -7,7 +7,7 @@ if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_PASSWORD ]; then
 fi
 # -Dkeycloak.hostname.fixed.httpPort=${PORT:-8080} 
 #SYS_PROPS=" -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.private=0.0.0.0"
-SYS_PROPS=" "
+SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 
 # if [ "$KEYCLOAK_ALWAYS_HTTPS" != "" ]; then
 #     SYS_PROPS+=" -Dkeycloak.hostname.fixed.alwaysHttps=$KEYCLOAK_ALWAYS_HTTPS"
