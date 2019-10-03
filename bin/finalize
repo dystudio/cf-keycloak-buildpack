@@ -7,7 +7,7 @@ CACHE_DIR="${2}"
 DEPS_DIR="${3}"
 DEPS_IDX="${4}"
 
-BUILDPACK_DIR=$(dirname $(readlink -f ${BASH_SOURCE%/*}))
+export BUILDPACK_DIR=$(dirname $(readlink -f ${BASH_SOURCE%/*}))
 source ${BUILDPACK_DIR}/parameters.sh
 
 [ -f "${BUILD_DIR}/runtime.txt" ] && KEYCLOAK_VERSION=$(grep -v '^#' "${BUILD_DIR}/runtime.txt" | head -n1)
@@ -30,7 +30,6 @@ export JAVA_HOME="${OPENJDK_DIR}"
 
 ###
 cd "${KEYCLOAK_DIR}"
-export KEYCLOAK_DIR
 
 echo ">Running standalone-configuration"
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-configuration.cli
