@@ -20,7 +20,7 @@ then
     fi
 fi
 
-KEYCLOAK_DOWNLOAD_URL="https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz"
+KEYCLOAK_DOWNLOAD_URL="https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz"
 if [ -f "${CACHE_DIR}/keycloak-${KEYCLOAK_VERSION}.tar.gz" ]
 then
     echo "-----> Using keycloak ${KEYCLOAK_VERSION} from cache"
@@ -29,6 +29,19 @@ else
     if ! wget -nv "${KEYCLOAK_DOWNLOAD_URL}" -O "${CACHE_DIR}/keycloak-${KEYCLOAK_VERSION}.tar.gz" 2>&1 | sed 's/^/       /'
     then
         echo "ERROR> keycloak version ${KEYCLOAK_VERSION} not found, URL=${KEYCLOAK_DOWNLOAD_URL}"
+        exit 1
+    fi
+fi
+
+JDK_DOWNLOAD_URL="https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz"
+if [ -f "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" ]
+then
+    echo "-----> Using openjdk ${OPENJDK_VERSION} from cache"
+else
+    echo "-----> Downloading openjdk: ${JDK_DOWNLOAD_URL}"
+    if ! wget -nv "${JDK_DOWNLOAD_URL}" -O "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" 2>&1 | sed 's/^/       /'
+    then
+        echo "ERROR> openjdk version ${OPENJDK_VERSION} not found, URL=${JDK_DOWNLOAD_URL}"
         exit 1
     fi
 fi

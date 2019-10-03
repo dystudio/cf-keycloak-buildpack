@@ -19,11 +19,16 @@ mkdir -p "${KEYCLOAK_DIR}"
 tar -zxf "${CACHE_DIR}/keycloak-${KEYCLOAK_VERSION}.tar.gz" -C "${KEYCLOAK_DIR}" --strip-components 1
 chmod -R +x ${KEYCLOAK_DIR}/bin/*.sh
 
+echo "-----> Installing openjdk"
+mkdir -p "${OPENJDK_DIR}"
+
+tar -zxf "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" -C "${OPENJDK_DIR}" --strip-components 1
+chmod -R +x ${OPENJDK_DIR}/bin/*.sh
+
+export JAVA_HOME="${OPENJDK_DIR}"
+export JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:ActiveProcessorCount=$(nproc)"
 
 ###
-
-export JAVA_HOME=$BUILD_DIR/.java-buildpack/open_jdk_jre
-export JAVA_OPTS=-Djava.io.tmpdir=$TMPDIR -XX:ActiveProcessorCount=$(nproc) -Djava.ext.dirs=$BUILD_DIR/.java-buildpack/container_security_provider:$BUILD_DIR/.java-buildpack/open_jdk_jre/lib/ext -Djava.security.properties=$BUILD_DIR/.java-buildpack/java_security/java.security"
 cd "${KEYCLOAK_DIR}"
 
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-configuration.cli
@@ -41,7 +46,6 @@ export TMPDIR=/home/vcap/tmp
 export KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
 export KEYCLOAK_DIR="${KEYCLOAK_DIR}"
 
-export JAVA_HOME=$BUILD_DIR/.java-buildpack/open_jdk_jre
-export JAVA_OPTS=-Djava.io.tmpdir=$TMPDIR -XX:ActiveProcessorCount=$(nproc) -Djava.ext.dirs=$BUILD_DIR/.java-buildpack/container_security_provider:$BUILD_DIR/.java-buildpack/open_jdk_jre/lib/ext -Djava.security.properties=$BUILD_DIR/.java-buildpack/java_security/java.security"
+export JAVA_HOME=$JAVA_HOME
+export JAVA_OPTS=$JAVA_OPTS
 EOF
-
