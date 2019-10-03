@@ -30,10 +30,13 @@ export JAVA_HOME="${OPENJDK_DIR}"
 
 ###
 cd "${KEYCLOAK_DIR}"
+export KEYCLOAK_DIR
 
+echo ">Running standalone-configuration"
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-configuration.cli
 rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
+echo ">Running standalone-ha-configuration"
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-ha-configuration.cli
 rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
@@ -47,5 +50,4 @@ export KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
 export KEYCLOAK_DIR="${KEYCLOAK_DIR}"
 
 export JAVA_HOME=$JAVA_HOME
-export JAVA_OPTS=$JAVA_OPTS
 EOF
