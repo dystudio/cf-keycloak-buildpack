@@ -1,0 +1,13 @@
+---
+applications:
+- name: cf-keycloak
+  memory: 1G
+  instances: 1
+  random-route: true
+  stack: cflinuxfs3
+  buildpacks:
+  - https://github.com/springernature/cf-keycloak-buildpack.git
+  env:
+    KEYCLOAK_USER: admin
+    KEYCLOAK_PASSWORD: admin
+    PROXY_ADDRESS_FORWARDING: true
