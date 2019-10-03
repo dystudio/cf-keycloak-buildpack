@@ -23,7 +23,10 @@ echo "-----> Installing openjdk"
 mkdir -p "${OPENJDK_DIR}"
 
 tar -zxf "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" -C "${OPENJDK_DIR}" --strip-components 1
+pwd
+ls -lR ${OPENJDK_DIR}
 chmod -R +x ${OPENJDK_DIR}/bin/*.sh
+
 
 export JAVA_HOME="${OPENJDK_DIR}"
 export JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:ActiveProcessorCount=$(nproc)"
