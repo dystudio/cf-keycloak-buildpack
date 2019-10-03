@@ -26,7 +26,7 @@ tar -zxf "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" -C "${OPENJDK_DIR}" --
 chmod -R +x ${OPENJDK_DIR}/bin/*
 
 export JAVA_HOME="${OPENJDK_DIR}"
-export JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:ActiveProcessorCount=$(nproc)"
+# export JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:ActiveProcessorCount=$(nproc)"
 
 ###
 cd "${KEYCLOAK_DIR}"
