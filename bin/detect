@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# bin/detect <build-dir>
+set -e
+
+# Acepts all apps!
+echo "Keycloak"
+exit 0
