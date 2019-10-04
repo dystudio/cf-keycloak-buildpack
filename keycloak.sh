@@ -13,6 +13,23 @@ SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 #     SYS_PROPS+=" -Dkeycloak.hostname.fixed.alwaysHttps=$KEYCLOAK_ALWAYS_HTTPS"
 # fi
 
+
+########################
+# JGroups bind options #
+########################
+
+if [ -z "$BIND" ]; then
+    BIND=$(hostname --all-ip-addresses)
+fi
+if [ -z "$BIND_OPTS" ]; then
+    for BIND_IP in $BIND
+    do
+        BIND_OPTS+=" -Djboss.bind.address=$BIND_IP -Djboss.bind.address.private=$BIND_IP "
+    done
+fi
+SYS_PROPS+=" $BIND_OPTS"
+
+
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
 exec $KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS -b 0.0.0.0
 exit $?
