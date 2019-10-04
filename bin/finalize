@@ -42,21 +42,39 @@ rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 # The DB cli commands can potentially move to the 'keycloak.sh' script
 if [ $DB_ADDR ]; then
 
-echo ">Deploying MySQL JDBC driver"
-mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
-cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
-# NOTE! The mysql version in the module.xml is hardcoded. This needs to be changed!
-cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
+    echo ">Deploying MySQL JDBC driver"
+    mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
+    cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
+    # NOTE! The mysql version in the module.xml is hardcoded. This needs to be changed!
+    cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
 
-echo ">Running MySQL standalone-configuration"
-bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
-rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
+    echo ">Running MySQL standalone-configuration"
+    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
+    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
-echo ">Running MySQL standalone-ha-configuration"
-bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-ha-configuration.cli
-rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
+    echo ">Running MySQL standalone-ha-configuration"
+    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-ha-configuration.cli
+    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
 
 fi
+
+
+###
+# JGroups for cluster discovery
+if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
+    echo ">>Set JGroups Discovery"
+    
+    JGROUPS_DISCOVERY_PROPERTIES_PARSED=`echo $JGROUPS_DISCOVERY_PROPERTIES | sed "s/=/=>/g"`
+    echo ">>>Setting JGroups discovery to $JGROUPS_DISCOVERY_PROTOCOL with properties $JGROUPS_DISCOVERY_PROPERTIES_PARSED"
+    echo "set keycloak_jgroups_discovery_protocol=${JGROUPS_DISCOVERY_PROTOCOL}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
+    echo "set keycloak_jgroups_discovery_protocol_properties=${JGROUPS_DISCOVERY_PROPERTIES_PARSED}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
+    echo "set keycloak_jgroups_transport_stack=${JGROUPS_TRANSPORT_STACK:-tcp}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
+    
+    echo ">>>Run jboss-cli"
+    #$KEYCLOAK_DIR/bin/jboss-cli.sh --file="/opt/jboss/tools/cli/jgroups/discovery/default.cli" >& /dev/null
+    $KEYCLOAK_DIR/bin/jboss-cli.sh --file="${BUILDPACK_DIR}/cli/jgroups/discovery/default.cli"
+fi
+
 
 ###
 
