@@ -24,7 +24,8 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
     echo "set keycloak_jgroups_transport_stack=${JGROUPS_TRANSPORT_STACK:-tcp}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     
     echo ">>>Run jboss-cli"
-    $KEYCLOAK_DIR/bin/jboss-cli.sh --file="/opt/jboss/tools/cli/jgroups/discovery/default.cli" >& /dev/null
+    #$KEYCLOAK_DIR/bin/jboss-cli.sh --file="/opt/jboss/tools/cli/jgroups/discovery/default.cli" >& /dev/null
+    $KEYCLOAK_DIR/bin/jboss-cli.sh --file="/opt/jboss/tools/cli/jgroups/discovery/default.cli"
 fi
 
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
