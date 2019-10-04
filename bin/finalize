@@ -45,6 +45,8 @@ if [ $DB_ADDR ]; then
 echo ">Deploying MySQL JDBC driver"
 mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
 cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
+# NOTE! The mysql version in the module.xml is hardcoded. This needs to be changed!
+cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
 
 echo ">Running MySQL standalone-configuration"
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
