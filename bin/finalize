@@ -39,6 +39,23 @@ echo ">Running standalone-ha-configuration"
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-ha-configuration.cli
 rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
+# The DB cli commands can potentially move to the 'keycloak.sh' script
+if [ $DB_ADDR ]; then
+
+echo ">Deploying MySQL JDBC driver"
+mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
+cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
+
+echo ">Running MySQL standalone-configuration"
+bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
+rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
+
+echo ">Running MySQL standalone-ha-configuration"
+bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-ha-configuration.cli
+rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
+
+fi
+
 ###
 
 mkdir -p "$BUILD_DIR/.profile.d"

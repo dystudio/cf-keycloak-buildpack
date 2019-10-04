@@ -45,3 +45,16 @@ else
         exit 1
     fi
 fi
+
+MYSQL_DRIVER_DOWNLOAD_URL="https://repo1.maven.org/maven2/mysql/mysql-connector-java/$JDBC_MYSQL_VERSION/mysql-connector-java-$JDBC_MYSQL_VERSION.jar"
+if [ -f "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" ]
+then
+    echo "-----> Using mysql driver ${JDBC_MYSQL_VERSION} from cache"
+else
+    echo "-----> Downloading mysql driver: ${MYSQL_DRIVER_DOWNLOAD_URL}"
+    if ! wget -nv "${MYSQL_DRIVER_DOWNLOAD_URL}" -O "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" 2>&1 | sed 's/^/       /'
+    then
+        echo "ERROR> mysql driver version ${JDBC_MYSQL_VERSION} not found, URL=${MYSQL_DRIVER_DOWNLOAD_URL}"
+        exit 1
+    fi
+fi
