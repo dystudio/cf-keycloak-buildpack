@@ -28,43 +28,32 @@ fi
 # Download section #
 ####################
 
-# This is where all required software is downloaded. All downloads are stored in a temporary location, which is the 'CACHE_DIR'. 
+# Generic download function
+# All downloads are stored in a temporary location, which is the 'CACHE_DIR'.
+download () {
+    DOWNLOAD_NAME="${1}"  # To identify the download. E.g. 'keycloak' or 'mysql driver'
+    TARGET_FILE="${2}"    # How the download gets stored locally.
+    DOWNLOAD_URL="${3}"   # This is what will be downloaded
 
-KEYCLOAK_DOWNLOAD_URL="https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz"
-if [ -f "${CACHE_DIR}/keycloak-${KEYCLOAK_VERSION}.tar.gz" ]
-then
-    echo "-----> Using keycloak ${KEYCLOAK_VERSION} from cache"
-else
-    echo "-----> Downloading keycloak: ${KEYCLOAK_DOWNLOAD_URL}"
-    if ! wget -nv "${KEYCLOAK_DOWNLOAD_URL}" -O "${CACHE_DIR}/keycloak-${KEYCLOAK_VERSION}.tar.gz" 2>&1 | sed 's/^/       /'
+    if [ -f "${CACHE_DIR}/${TARGET_FILE}" ]
     then
-        echo "ERROR> keycloak version ${KEYCLOAK_VERSION} not found, URL=${KEYCLOAK_DOWNLOAD_URL}"
-        exit 1
+        echo "-----> Using ${TARGET_FILE} from cache"
+    else
+        echo "-----> Downloading ${DOWNLOAD_NAME}: ${DOWNLOAD_URL}"
+        if ! wget -nv "${DOWNLOAD_URL}" -O "${CACHE_DIR}/${TARGET_FILE}" 2>&1 | sed 's/^/       /'
+        then
+            echo "ERROR> Download for ${DOWNLOAD_NAME} not found, URL=${KEYCLOAK_DOWNLOAD_URL}"
+            exit 1
+        fi
     fi
-fi
+}
+
+# This is where all required software is downloaded.
+KEYCLOAK_DOWNLOAD_URL="https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz"
+download "keycloak" "keycloak-${KEYCLOAK_VERSION}.tar.gz" "${KEYCLOAK_DOWNLOAD_URL}"
 
 JDK_DOWNLOAD_URL="https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz"
-if [ -f "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" ]
-then
-    echo "-----> Using openjdk ${OPENJDK_VERSION} from cache"
-else
-    echo "-----> Downloading openjdk: ${JDK_DOWNLOAD_URL}"
-    if ! wget -nv "${JDK_DOWNLOAD_URL}" -O "${CACHE_DIR}/openjdk-${OPENJDK_VERSION}.tar.gz" 2>&1 | sed 's/^/       /'
-    then
-        echo "ERROR> openjdk version ${OPENJDK_VERSION} not found, URL=${JDK_DOWNLOAD_URL}"
-        exit 1
-    fi
-fi
+download "openjdk" "openjdk-${OPENJDK_VERSION}.tar.gz" "${JDK_DOWNLOAD_URL}"
 
 MYSQL_DRIVER_DOWNLOAD_URL="https://repo1.maven.org/maven2/mysql/mysql-connector-java/$JDBC_MYSQL_VERSION/mysql-connector-java-$JDBC_MYSQL_VERSION.jar"
-if [ -f "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" ]
-then
-    echo "-----> Using mysql driver ${JDBC_MYSQL_VERSION} from cache"
-else
-    echo "-----> Downloading mysql driver: ${MYSQL_DRIVER_DOWNLOAD_URL}"
-    if ! wget -nv "${MYSQL_DRIVER_DOWNLOAD_URL}" -O "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" 2>&1 | sed 's/^/       /'
-    then
-        echo "ERROR> mysql driver version ${JDBC_MYSQL_VERSION} not found, URL=${MYSQL_DRIVER_DOWNLOAD_URL}"
-        exit 1
-    fi
-fi
+download "mysql driver" "mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${MYSQL_DRIVER_DOWNLOAD_URL}"
