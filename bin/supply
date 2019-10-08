@@ -2,14 +2,18 @@
 set -euo pipefail
 # https://docs.cloudfoundry.org/buildpacks/understand-buildpacks.html
 
+# Environment variables which are provided by the CF platform
 BUILD_DIR="${1}"
 CACHE_DIR="${2}"
 DEPS_DIR="${3}"
 DEPS_IDX="${4}"
 
 BUILDPACK_DIR=$(dirname $(readlink -f ${BASH_SOURCE%/*}))
+# Set custom environment variables, configured in parameters.sh
 source ${BUILDPACK_DIR}/parameters.sh
 
+# The Keycloak version can be overridden by specifying the version number in runtime.txt
+# You can add comments to the runtime.txt when the line starts with `#`
 if [ -f "${BUILD_DIR}/runtime.txt" ]
 then
     KEYCLOAK_VERSION=$((grep -v '^#' "${BUILD_DIR}/runtime.txt" || true) | head -n1)
@@ -19,6 +23,12 @@ then
         exit 1
     fi
 fi
+
+####################
+# Download section #
+####################
+
+# This is where all required software is downloaded. All downloads are stored in a temporary location, which is the 'CACHE_DIR'. 
 
 KEYCLOAK_DOWNLOAD_URL="https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz"
 if [ -f "${CACHE_DIR}/keycloak-${KEYCLOAK_VERSION}.tar.gz" ]

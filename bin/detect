@@ -2,6 +2,6 @@
 # bin/detect <build-dir>
 set -e
 
-# Acepts all apps!
+# Acepts all apps! (CF just expects the 'detect' phase to exit with a 0 status.)
 echo "Keycloak"
 exit 0
