@@ -64,7 +64,8 @@ fi
 if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
     echo ">>Set JGroups Discovery"
     
-    JGROUPS_DISCOVERY_PROPERTIES_PARSED=`echo $JGROUPS_DISCOVERY_PROPERTIES | sed "s/=/=>/g"`
+    #JGROUPS_DISCOVERY_PROPERTIES_PARSED=`echo $JGROUPS_DISCOVERY_PROPERTIES | sed "s/=/=>/g"`
+    JGROUPS_DISCOVERY_PROPERTIES_PARSED=$JGROUPS_DISCOVERY_PROPERTIES
     echo ">>>Setting JGroups discovery to $JGROUPS_DISCOVERY_PROTOCOL with properties $JGROUPS_DISCOVERY_PROPERTIES_PARSED"
     echo "set keycloak_jgroups_discovery_protocol=${JGROUPS_DISCOVERY_PROTOCOL}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     echo "set keycloak_jgroups_discovery_protocol_properties=${JGROUPS_DISCOVERY_PROPERTIES_PARSED}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
