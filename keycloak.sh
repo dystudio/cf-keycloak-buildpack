@@ -30,6 +30,15 @@ fi
 SYS_PROPS+=" $BIND_OPTS"
 
 
+##################################################
+# Copy Keycloak SPI's to JBoss deployment folder #
+##################################################
+cp /home/vcap/app/spi/* "$KEYCLOAK_DIR/standalone/deployments/"
+
+########################
+# Start JBoss/Keycloak #
+########################
+
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
 exec $KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS -b 0.0.0.0
 exit $?
