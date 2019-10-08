@@ -30,7 +30,14 @@ SYS_PROPS+=" $BIND_OPTS"
 ##################################################
 # Copy Keycloak SPI's to JBoss deployment folder #
 ##################################################
-cp /home/vcap/app/spi/* "$KEYCLOAK_DIR/standalone/deployments/"
+
+# A 'spi' directory is expected as part of the CF app being deployed
+if [ -d "/home/vcap/app/spi" ]; then
+    # Delete existing JBoss 'deployments' directory. Then recreate the 'deployments' directory, but as
+    # a symlink to CF app directory
+    rm -rf "$KEYCLOAK_DIR/standalone/deployments"
+    ln -s /home/vcap/app/spi "$KEYCLOAK_DIR/standalone/deployments"
+fi
 
 ########################
 # Start JBoss/Keycloak #
