@@ -16,4 +16,4 @@ applications:
     DB_USER: keycloak
     DB_PASSWORD: password
     JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
-    JGROUPS_DISCOVERY_PROPERTIES: datasource_jndi_name=java:jboss/datasources/KeycloakDS
+    JGROUPS_DISCOVERY_PROPERTIES: datasource_jndi_name="java:jboss/datasources/KeycloakDS",remove_old_coords_on_view_change="true",remove_all_data_on_view_change="true"
