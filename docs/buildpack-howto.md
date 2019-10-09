@@ -129,6 +129,8 @@ fictitious Python application:
 
 Points `1`, `2`, `3` and `4` of the CF buildpack are explained below in the next section.
 
+`docker build` is like the CloudFoundry staging phase, and `docker run` is like when
+application gets running, both phases are run sequentially after `cf push`.
 
 # Cloudfoundry buildpack interface
 
