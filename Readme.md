@@ -36,6 +36,11 @@ The buildpack has support to automatically deploy Service Provider Interfaces (S
 moving jars into it. When the application starts, WildFly will load these 
 Keycloak extensions and they will be available in the application.
 
+For extra documentation ...
+* about Cloudfoundry Buildpacks, go to https://github.com/springernature/cf-keycloak-buildpack/blob/master/docs/buildpack-howto.md
+* about Keycloak clustering, go to https://github.com/springernature/cf-keycloak-buildpack/blob/master/docs/keycloak-clustering.md
+
+
 ## Considerations
 
 1. **Keycloak is built on top of the WildFly application server** and it’s sub-projects
