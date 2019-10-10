@@ -32,9 +32,9 @@ In order to get a single instance (Standalone Mode) of Keycloak up and running:
 
 
 The buildpack has support to automatically deploy Service Provider Interfaces (SPI's,
-*Keycloak extensions*) just by creating a `spi` folder in the application root and
-moving jars into it. When the application starts, WildFly will load these 
-Keycloak extensions and they will be available in the application.
+*Keycloak extensions or plugins*) just by creating a `spi` folder in the application root
+and moving jars into it. When the application starts, WildFly will load these 
+Keycloak plugins and they will be available in the application.
 
 For extra documentation ...
 * about Cloudfoundry Buildpacks, go to https://github.com/springernature/cf-keycloak-buildpack/blob/master/docs/buildpack-howto.md
