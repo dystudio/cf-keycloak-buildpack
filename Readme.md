@@ -12,8 +12,8 @@ as application bits!).
 
 In order to get a single instance (Standalone Mode) of Keycloak up and running:
 
-1. In an empty folder create an empty file: `touch hola.txt`
-2. Create a `manifest.yml`
+1. In an empty folder create an empty file (random name): `touch hola.txt`
+2. Create a basic `manifest.yml`
     ```
     ---
     applications:
@@ -28,12 +28,13 @@ In order to get a single instance (Standalone Mode) of Keycloak up and running:
         KEYCLOAK_USER: admin
         KEYCLOAK_PASSWORD: admin
     ```
-3. Run `cf push`
+3. Run `cf push` to get the app running in a random route.
 
 
-The buildpack has support to automatically deploy Service Provider Interfaces (SPI's)
-just by creating a `spi` folder in the application root and move the jars into it.
-When the application starts, WildFly will load the Keycloak extensions.
+The buildpack has support to automatically deploy Service Provider Interfaces (SPI's,
+*Keycloak extensions*) just by creating a `spi` folder in the application root and
+moving jars into it. When the application starts, WildFly will load these 
+Keycloak extensions and they will be available in the application.
 
 ## Considerations
 
