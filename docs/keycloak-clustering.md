@@ -272,3 +272,11 @@ Optimizations for cloud based discovery stores: https://github.com/belaban/JGrou
 The previous document is focused on the implementation in Cloud resources with buckets (S3, GCP, ...) but it seems
 these implementations are specializations (subclass using inheritance) of FILE_PING. JDBC_PING seems also a specialization
 of FILE_PING, so most likely the algorithm to elect coordinator, deal with partitions, etc. is the same.
+
+Other design documents:
+
+* https://github.com/belaban/JGroups/blob/master/doc/design/FILE_PING.txt
+* https://github.com/belaban/JGroups/blob/master/doc/design/JDBC_PING.txt
+* https://github.com/belaban/JGroups/blob/master/doc/design/LogicalAddresses.txt
+* https://github.com/belaban/JGroups/blob/master/doc/design/ViewHandling.txt
+
