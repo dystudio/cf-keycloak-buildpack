@@ -10,6 +10,7 @@ DEPS_IDX="${4}"
 export BUILDPACK_DIR=$(dirname $(readlink -f ${BASH_SOURCE%/*}))
 source ${BUILDPACK_DIR}/parameters.sh
 
+# TODO: Remove this part, as we can override this with an env var in the CF manifest
 [ -f "${BUILD_DIR}/runtime.txt" ] && KEYCLOAK_VERSION=$(grep -v '^#' "${BUILD_DIR}/runtime.txt" | head -n1)
 
 
@@ -45,7 +46,7 @@ if [ $DB_ADDR ]; then
     echo ">Deploying MySQL JDBC driver"
     mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
     cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
-    # NOTE! The mysql version in the module.xml is hardcoded. This needs to be changed!
+    # ToDo! The mysql version in the module.xml is hardcoded. This needs to be changed!
     cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
 
     echo ">Running MySQL standalone-configuration"
@@ -67,12 +68,12 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
     #JGROUPS_DISCOVERY_PROPERTIES_PARSED=`echo $JGROUPS_DISCOVERY_PROPERTIES | sed "s/=/=>/g"`
     JGROUPS_DISCOVERY_PROPERTIES_PARSED=$JGROUPS_DISCOVERY_PROPERTIES
     echo ">>>Setting JGroups discovery to $JGROUPS_DISCOVERY_PROTOCOL with properties $JGROUPS_DISCOVERY_PROPERTIES_PARSED"
+    # Todo: Perhaps try if we can just export these env vars (instead of writing these to the jboss-cli rc file
     echo "set keycloak_jgroups_discovery_protocol=${JGROUPS_DISCOVERY_PROTOCOL}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     echo "set keycloak_jgroups_discovery_protocol_properties=${JGROUPS_DISCOVERY_PROPERTIES_PARSED}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     echo "set keycloak_jgroups_transport_stack=${JGROUPS_TRANSPORT_STACK:-tcp}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     
     echo ">>>Run jboss-cli"
-    #$KEYCLOAK_DIR/bin/jboss-cli.sh --file="/opt/jboss/tools/cli/jgroups/discovery/default.cli" >& /dev/null
     $KEYCLOAK_DIR/bin/jboss-cli.sh --file="${BUILDPACK_DIR}/cli/jgroups/discovery/default.cli"
 fi
 
@@ -80,6 +81,7 @@ fi
 ###
 
 mkdir -p "$BUILD_DIR/.profile.d"
+# Making sure the environment Keycloak will be run from contains the correct variables.
 cat <<EOF > "$BUILD_DIR/.profile.d/0010_keycloak.sh"
 export TMPDIR=/home/vcap/tmp
 

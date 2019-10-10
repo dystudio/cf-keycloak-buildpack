@@ -8,6 +8,7 @@ fi
 
 # -Dkeycloak.hostname.fixed.httpPort=${PORT:-8080} 
 
+# Todo: Maybe not needed anymore?
 SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 
 
@@ -15,6 +16,8 @@ SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 # JGroups bind options #
 ########################
 
+# Todo: Simply these lines of code. We can just always set the ip from 'hostname --all-ip-addresses'
+# No need to do checks
 if [ -z "$BIND" ]; then
     BIND=$(hostname --all-ip-addresses)
 fi

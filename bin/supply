@@ -14,6 +14,7 @@ source ${BUILDPACK_DIR}/parameters.sh
 
 # The Keycloak version can be overridden by specifying the version number in runtime.txt
 # You can add comments to the runtime.txt when the line starts with `#`
+# TODO: Remove this part, as we can override this with an env var in the CF manifest
 if [ -f "${BUILD_DIR}/runtime.txt" ]
 then
     KEYCLOAK_VERSION=$((grep -v '^#' "${BUILD_DIR}/runtime.txt" || true) | head -n1)
@@ -52,6 +53,9 @@ download () {
 KEYCLOAK_DOWNLOAD_URL="https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz"
 download "keycloak" "keycloak-${KEYCLOAK_VERSION}.tar.gz" "${KEYCLOAK_DOWNLOAD_URL}"
 
+# NOT using the Java buldpack because, A) We want to control the Java version to keep it the same as that specified in
+# the Keycloak Docker image and B) because if you use the Java buildpack it has to be the last one in the buildpack
+# 'chain' and that would stop us from having Keycloak as the last buildpack, which would stop us from running Keycloak.
 JDK_DOWNLOAD_URL="https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz"
 download "openjdk" "openjdk-${OPENJDK_VERSION}.tar.gz" "${JDK_DOWNLOAD_URL}"
 
