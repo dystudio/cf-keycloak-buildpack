@@ -35,11 +35,15 @@ SYS_PROPS+=" $BIND_OPTS"
 ##################################################
 
 # A 'spi' directory is expected as part of the CF app being deployed
-if [ -d "/home/vcap/app/spi" ]; then
+if [ -d "/home/vcap/app/spis" ]; then
+    echo ">> Copying SPIs."
     # Delete existing JBoss 'deployments' directory. Then recreate the 'deployments' directory, but as
     # a symlink to CF app directory
-    rm -rf "$KEYCLOAK_DIR/standalone/deployments"
-    ln -s /home/vcap/app/spi "$KEYCLOAK_DIR/standalone/deployments"
+
+    #rm -rf "$KEYCLOAK_DIR/standalone/deployments"
+    #ln -s /home/vcap/app/spi "$KEYCLOAK_DIR/standalone/deployments"
+    ls spis/*/target/libs/*.jar
+    cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
 
 ########################
