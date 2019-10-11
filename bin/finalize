@@ -59,8 +59,7 @@ if [ $DB_ADDR ]; then
 
     echo ">Deploying PostgresSQL JDBC driver"
     mkdir -p "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
-    cp "${CACHE_DIR}/postgres-connector-java-$JDBC_POSTGRES_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
-    # ToDo! The postgres version in the module.xml is hardcoded. This needs to be changed!
+    cp "${CACHE_DIR}/postgres-jdbc.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
     cp "${BUILDPACK_DIR}/databases/postgres/module.xml" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
 
     echo ">Running PostgresSQL standalone-configuration"

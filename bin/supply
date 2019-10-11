@@ -63,4 +63,4 @@ download "openjdk" "openjdk-${OPENJDK_VERSION}.tar.gz" "${JDK_DOWNLOAD_URL}"
 #download "mysql driver" "mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${MYSQL_DRIVER_DOWNLOAD_URL}"
 
 POSTGRES_DRIVER_DOWNLOAD_URL="https://repo1.maven.org/maven2/org/postgresql/postgresql/$JDBC_POSTGRES_VERSION/postgresql-$JDBC_POSTGRES_VERSION.jar"
-download "postgres driver" "postgres-connector-java-$JDBC_POSTGRES_VERSION.jar" "${POSTGRES_DRIVER_DOWNLOAD_URL}"
+download "postgres driver" "postgres-jdbc.jar" "${POSTGRES_DRIVER_DOWNLOAD_URL}"
