@@ -59,8 +59,8 @@ download "keycloak" "keycloak-${KEYCLOAK_VERSION}.tar.gz" "${KEYCLOAK_DOWNLOAD_U
 JDK_DOWNLOAD_URL="https://download.java.net/openjdk/jdk11/ri/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz"
 download "openjdk" "openjdk-${OPENJDK_VERSION}.tar.gz" "${JDK_DOWNLOAD_URL}"
 
-#MYSQL_DRIVER_DOWNLOAD_URL="https://repo1.maven.org/maven2/mysql/mysql-connector-java/$JDBC_MYSQL_VERSION/mysql-connector-java-$JDBC_MYSQL_VERSION.jar"
-#download "mysql driver" "mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${MYSQL_DRIVER_DOWNLOAD_URL}"
+MYSQL_DRIVER_DOWNLOAD_URL="https://repo1.maven.org/maven2/mysql/mysql-connector-java/$JDBC_MYSQL_VERSION/mysql-connector-java-$JDBC_MYSQL_VERSION.jar"
+download "mysql driver" "mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${MYSQL_DRIVER_DOWNLOAD_URL}"
 
 POSTGRES_DRIVER_DOWNLOAD_URL="https://repo1.maven.org/maven2/org/postgresql/postgresql/$JDBC_POSTGRES_VERSION/postgresql-$JDBC_POSTGRES_VERSION.jar"
 download "postgres driver" "postgres-jdbc.jar" "${POSTGRES_DRIVER_DOWNLOAD_URL}"

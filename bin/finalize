@@ -46,13 +46,13 @@ if [ $DB_ADDR ]; then
 #    echo ">Deploying MySQL JDBC driver"
 #    mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
 #    cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
-#     ToDo! The mysql version in the module.xml is hardcoded. This needs to be changed!
+##     ToDo! The mysql version in the module.xml is hardcoded. This needs to be changed!
 #    cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
-
+#
 #    echo ">Running MySQL standalone-configuration"
 #    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
 #    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
-
+#
 #    echo ">Running MySQL standalone-ha-configuration"
 #    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-ha-configuration.cli
 #    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
@@ -77,12 +77,10 @@ fi
 if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
     echo ">>Set JGroups Discovery"
     
-    #JGROUPS_DISCOVERY_PROPERTIES_PARSED=`echo $JGROUPS_DISCOVERY_PROPERTIES | sed "s/=/=>/g"`
-    JGROUPS_DISCOVERY_PROPERTIES_PARSED=$JGROUPS_DISCOVERY_PROPERTIES
-    echo ">>>Setting JGroups discovery to $JGROUPS_DISCOVERY_PROTOCOL with properties $JGROUPS_DISCOVERY_PROPERTIES_PARSED"
+    echo ">>>Setting JGroups discovery to $JGROUPS_DISCOVERY_PROTOCOL with properties $JGROUPS_DISCOVERY_PROPERTIES"
     # Todo: Perhaps try if we can just export these env vars (instead of writing these to the jboss-cli rc file
     echo "set keycloak_jgroups_discovery_protocol=${JGROUPS_DISCOVERY_PROTOCOL}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
-    echo "set keycloak_jgroups_discovery_protocol_properties=${JGROUPS_DISCOVERY_PROPERTIES_PARSED}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
+    echo "set keycloak_jgroups_discovery_protocol_properties=${JGROUPS_DISCOVERY_PROPERTIES}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     echo "set keycloak_jgroups_transport_stack=${JGROUPS_TRANSPORT_STACK:-tcp}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     
     echo ">>>Run jboss-cli"
