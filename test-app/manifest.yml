@@ -9,7 +9,7 @@ applications:
   - https://github.com/springernature/cf-keycloak-buildpack.git
   env:
     KEYCLOAK_USER: admin
-    KEYCLOAK_PASSWORD: admin
+    KEYCLOAK_ADMIN_PASSWORD: admin
     PROXY_ADDRESS_FORWARDING: true
     DB_ADDR: 10.84.0.7
     DB_DATABASE: keycloak

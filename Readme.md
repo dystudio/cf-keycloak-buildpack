@@ -26,7 +26,7 @@ In order to get a single instance (Standalone Mode) of Keycloak up and running:
     - https://github.com/springernature/cf-keycloak-buildpack.git
     env:
         KEYCLOAK_USER: admin
-        KEYCLOAK_PASSWORD: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
     ```
 3. Run `cf push` to get the app running in a random route.
 

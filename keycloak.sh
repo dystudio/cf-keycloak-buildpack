@@ -2,8 +2,8 @@
 set -e
 
 echo ">>Creating user"
-if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_PASSWORD ]; then
-    $KEYCLOAK_DIR/bin/add-user-keycloak.sh --user $KEYCLOAK_USER --password $KEYCLOAK_PASSWORD
+if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_ADMIN_PASSWORD ]; then
+    $KEYCLOAK_DIR/bin/add-user-keycloak.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
 fi
 
 # -Dkeycloak.hostname.fixed.httpPort=${PORT:-8080} 
