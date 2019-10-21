@@ -20,7 +20,7 @@ then
     KEYCLOAK_VERSION=$((grep -v '^#' "${BUILD_DIR}/runtime.txt" || true) | head -n1)
     if [ -z "${KEYCLOAK_VERSION}" ]
     then
-        echo "ERROR> runtime.txt found but no version specified!"
+        echo "ERROR ($LINENO)> runtime.txt found but no version specified!"
         exit 1
     fi
 fi
@@ -54,11 +54,11 @@ check_and_download () {
            then
                echo "--> ${DOWNLOAD_NAME} uploaded to Artifactory"
            else
-               echo "--> ERROR: Failed to upload ${DOWNLOAD_NAME} to Artifactory"
+               echo "ERROR ($LINENO)> Failed to upload ${DOWNLOAD_NAME} to Artifactory"
                exit 1
            fi
        else
-           echo "--> ERROR: Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
+           echo "ERROR ($LINENO)> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
            exit 1
        fi
    fi
@@ -78,7 +78,7 @@ download () {
         echo "-----> Downloading ${DOWNLOAD_NAME}: ${DOWNLOAD_URL}"
         if ! wget -nv "${DOWNLOAD_URL}" --http-user "${ARTIFACTORY_USERNAME}" --http-password "${ARTIFACTORY_PASSWORD}" -O "${CACHE_DIR}/${TARGET_FILE}" 2>&1 | sed 's/^/       /'
         then
-            echo "ERROR> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
+            echo "ERROR ($LINENO)> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
             exit 1
         fi
     fi
@@ -88,7 +88,7 @@ download () {
 # This is where all required software is downloaded.
 if [[ -z "${ARTIFACTORY_URL}" || -z "${ARTIFACTORY_USERNAME}" || -z "${ARTIFACTORY_PASSWORD}" || -z "${KEYCLOAK_VERSION}" || -z "${OPENJDK_VERSION}" ]]
 then
-   echo "One of the required environment variables is not set or empty valued:"
+   echo "ERROR ($LINENO)> One of the required environment variables is not set or empty valued:"
    echo -e "ARTIFACTORY_URL\nARTIFACTORY_USERNAME\nARTIFACTORY_PASSWORD\nKEYCLOAK_VERSION\nOPENJDK_VERSION"
    exit 1
 else
@@ -100,6 +100,11 @@ else
    check_and_download "openjdk" "${OPENJDK_VERSION}" "net/java" "openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz" "${JDK_DOWNLOAD_URL}"
 fi
 
+if [[ -z "${JDBC_POSTGRES_VERSION}" && -z "${JDBC_MYSQL_VERSION}" ]]
+then
+  echo "ERROR ($LINENO)> You must specify one of 'JDBC_POSTGRES_VERSION' or 'JDBC_MYSQL_VERSION'."
+  exit 1
+fi
 
 KEYCLOAK_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/identity-buildpack-local/org/keycloak/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz"
 download "keycloak" "keycloak-${KEYCLOAK_VERSION}.tar.gz" "${KEYCLOAK_DOWNLOAD_URL}"
@@ -110,8 +115,15 @@ download "keycloak" "keycloak-${KEYCLOAK_VERSION}.tar.gz" "${KEYCLOAK_DOWNLOAD_U
 JDK_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/identity-buildpack-local/net/java/openjdk/${OPENJDK_VERSION}/openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz"
 download "openjdk" "openjdk-${OPENJDK_VERSION}.tar.gz" "${JDK_DOWNLOAD_URL}"
 
-MYSQL_DRIVER_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/jcenter/mysql/mysql-connector-java/$JDBC_MYSQL_VERSION/mysql-connector-java-$JDBC_MYSQL_VERSION.jar"
-download "mysql driver" "mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${MYSQL_DRIVER_DOWNLOAD_URL}"
+if [[ -v JDBC_POSTGRES_VERSION ]]
+then
+  POSTGRES_DRIVER_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/jcenter/org/postgresql/postgresql/$JDBC_POSTGRES_VERSION/postgresql-$JDBC_POSTGRES_VERSION.jar"
+  download "postgres driver" "postgres-jdbc.jar" "${POSTGRES_DRIVER_DOWNLOAD_URL}"
+fi
 
-POSTGRES_DRIVER_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/jcenter/org/postgresql/postgresql/$JDBC_POSTGRES_VERSION/postgresql-$JDBC_POSTGRES_VERSION.jar"
-download "postgres driver" "postgres-jdbc.jar" "${POSTGRES_DRIVER_DOWNLOAD_URL}"
+if [[ -v JDBC_MYSQL_VERSION ]]
+then
+  MYSQL_DRIVER_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/jcenter/mysql/mysql-connector-java/$JDBC_MYSQL_VERSION/mysql-connector-java-$JDBC_MYSQL_VERSION.jar"
+  download "mysql driver" "mysql-connector-java.jar" "${MYSQL_DRIVER_DOWNLOAD_URL}"
+fi
+

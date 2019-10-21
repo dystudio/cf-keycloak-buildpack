@@ -42,33 +42,37 @@ rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
 # The DB cli commands can potentially move to the 'keycloak.sh' script
 if [ $DB_ADDR ]; then
+  if [[ -v JDBC_POSTGRES_VERSION ]]
+  then
+      echo ">Deploying PostgresSQL JDBC driver"
+      mkdir -p "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
+      cp "${CACHE_DIR}/postgres-jdbc.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
+      cp "${BUILDPACK_DIR}/databases/postgres/module.xml" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
 
-#    echo ">Deploying MySQL JDBC driver"
-#    mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
-#    cp "${CACHE_DIR}/mysql-connector-java-$JDBC_MYSQL_VERSION.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
-##     ToDo! The mysql version in the module.xml is hardcoded. This needs to be changed!
-#    cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
-#
-#    echo ">Running MySQL standalone-configuration"
-#    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
-#    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
-#
-#    echo ">Running MySQL standalone-ha-configuration"
-#    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-ha-configuration.cli
-#    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
+      echo ">Running PostgresSQL standalone-configuration"
+      bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/postgres/standalone-configuration.cli
+      rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
-    echo ">Deploying PostgresSQL JDBC driver"
-    mkdir -p "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
-    cp "${CACHE_DIR}/postgres-jdbc.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
-    cp "${BUILDPACK_DIR}/databases/postgres/module.xml" "${KEYCLOAK_DIR}/modules/system/layers/base/org/postgresql/jdbc/main"
+      echo ">Running PostgresSQL standalone-ha-configuration"
+      bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/postgres/standalone-ha-configuration.cli
+      rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
+  fi
 
-    echo ">Running PostgresSQL standalone-configuration"
-    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/postgres/standalone-configuration.cli
-    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
+  if [[ -v JDBC_MYSQL_VERSION ]]
+  then
+      echo ">Deploying MySQL JDBC driver"
+      mkdir -p ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
+      cp "${CACHE_DIR}/mysql-connector-java.jar" "${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main"
+      cp "${BUILDPACK_DIR}/databases/mysql/module.xml" ${KEYCLOAK_DIR}/modules/system/layers/base/com/mysql/jdbc/main
 
-    echo ">Running PostgresSQL standalone-ha-configuration"
-    bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/postgres/standalone-ha-configuration.cli
-    rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
+      echo ">Running MySQL standalone-configuration"
+      bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-configuration.cli
+      rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
+
+      echo ">Running MySQL standalone-ha-configuration"
+      bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/databases/mysql/standalone-ha-configuration.cli
+      rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history/current/*
+  fi
 fi
 
 
@@ -86,8 +90,6 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
     echo ">>>Run jboss-cli"
     $KEYCLOAK_DIR/bin/jboss-cli.sh --file="${BUILDPACK_DIR}/cli/jgroups/discovery/default.cli"
 fi
-
-
 ###
 
 mkdir -p "$BUILD_DIR/.profile.d"
