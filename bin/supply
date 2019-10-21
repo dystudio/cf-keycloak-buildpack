@@ -20,7 +20,7 @@ then
     KEYCLOAK_VERSION=$((grep -v '^#' "${BUILD_DIR}/runtime.txt" || true) | head -n1)
     if [ -z "${KEYCLOAK_VERSION}" ]
     then
-        echo "ERROR ($LINENO)> runtime.txt found but no version specified!"
+        >&2 echo "ERROR ($LINENO)> runtime.txt found but no version specified!"
         exit 1
     fi
 fi
@@ -54,11 +54,11 @@ check_and_download () {
            then
                echo "--> ${DOWNLOAD_NAME} uploaded to Artifactory"
            else
-               echo "ERROR ($LINENO)> Failed to upload ${DOWNLOAD_NAME} to Artifactory"
+               >&2 echo "ERROR ($LINENO)> Failed to upload ${DOWNLOAD_NAME} to Artifactory"
                exit 1
            fi
        else
-           echo "ERROR ($LINENO)> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
+           >&2 echo "ERROR ($LINENO)> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
            exit 1
        fi
    fi
@@ -78,7 +78,7 @@ download () {
         echo "-----> Downloading ${DOWNLOAD_NAME}: ${DOWNLOAD_URL}"
         if ! wget -nv "${DOWNLOAD_URL}" --http-user "${ARTIFACTORY_USERNAME}" --http-password "${ARTIFACTORY_PASSWORD}" -O "${CACHE_DIR}/${TARGET_FILE}" 2>&1 | sed 's/^/       /'
         then
-            echo "ERROR ($LINENO)> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
+            >&2 echo "ERROR ($LINENO)> Download for ${DOWNLOAD_NAME} not found, URL=${DOWNLOAD_URL}"
             exit 1
         fi
     fi
@@ -88,7 +88,7 @@ download () {
 # This is where all required software is downloaded.
 if [[ -z "${ARTIFACTORY_URL}" || -z "${ARTIFACTORY_USERNAME}" || -z "${ARTIFACTORY_PASSWORD}" || -z "${KEYCLOAK_VERSION}" || -z "${OPENJDK_VERSION}" ]]
 then
-   echo "ERROR ($LINENO)> One of the required environment variables is not set or empty valued:"
+   >&2 echo "ERROR ($LINENO)> One of the required environment variables is not set or empty valued:"
    echo -e "ARTIFACTORY_URL\nARTIFACTORY_USERNAME\nARTIFACTORY_PASSWORD\nKEYCLOAK_VERSION\nOPENJDK_VERSION"
    exit 1
 else
@@ -102,7 +102,7 @@ fi
 
 if [[ -z "${JDBC_POSTGRES_VERSION}" && -z "${JDBC_MYSQL_VERSION}" ]]
 then
-  echo "ERROR ($LINENO)> You must specify one of 'JDBC_POSTGRES_VERSION' or 'JDBC_MYSQL_VERSION'."
+  >&2 echo "ERROR ($LINENO)> You must specify one of 'JDBC_POSTGRES_VERSION' or 'JDBC_MYSQL_VERSION'."
   exit 1
 fi
 
