@@ -17,3 +17,6 @@ applications:
     DB_PASSWORD: password
     JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
     JGROUPS_DISCOVERY_PROPERTIES: datasource_jndi_name="java:jboss/datasources/KeycloakDS",remove_old_coords_on_view_change="true",remove_all_data_on_view_change="true"
+    ARTIFACTORY_URL: ((artifactory.url))
+    ARTIFACTORY_USERNAME: ((artifactory.username))
+    ARTIFACTORY_PASSWORD: ((artifactory.password))
