@@ -100,7 +100,7 @@ else
    check_and_download "openjdk" "${OPENJDK_VERSION}" "net/java" "openjdk-${OPENJDK_VERSION}_linux-x64_bin.tar.gz" "${JDK_DOWNLOAD_URL}"
 fi
 
-if [[ -z "${JDBC_POSTGRES_VERSION}" && -z "${JDBC_MYSQL_VERSION}" ]]
+if [[ ! -v JDBC_POSTGRES_VERSION && ! -v JDBC_MYSQL_VERSION ]]
 then
   >&2 echo "ERROR ($LINENO)> You must specify one of 'JDBC_POSTGRES_VERSION' or 'JDBC_MYSQL_VERSION'."
   exit 1
