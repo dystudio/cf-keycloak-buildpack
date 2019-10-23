@@ -6,11 +6,8 @@ if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_ADMIN_PASSWORD ]; then
     $KEYCLOAK_DIR/bin/add-user-keycloak.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
 fi
 
-# -Dkeycloak.hostname.fixed.httpPort=${PORT:-8080} 
-
 # Todo: Maybe not needed anymore?
 SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
-
 
 ########################
 # JGroups bind options #
@@ -37,11 +34,6 @@ SYS_PROPS+=" $BIND_OPTS"
 # A 'spi' directory is expected as part of the CF app being deployed
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying SPIs."
-    # Delete existing JBoss 'deployments' directory. Then recreate the 'deployments' directory, but as
-    # a symlink to CF app directory
-
-    #rm -rf "$KEYCLOAK_DIR/standalone/deployments"
-    #ln -s /home/vcap/app/spi "$KEYCLOAK_DIR/standalone/deployments"
     ls spis/*/target/libs/*.jar
     cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
