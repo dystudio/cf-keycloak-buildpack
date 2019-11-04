@@ -31,7 +31,7 @@ SYS_PROPS+=" $BIND_OPTS"
 # Copy Keycloak SPI's to JBoss deployment folder #
 ##################################################
 
-# A 'spi' directory is expected as part of the CF app being deployed
+# A 'spis' directory is expected as part of the CF app being deployed
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying SPIs."
     ls spis/*/target/libs/*.jar

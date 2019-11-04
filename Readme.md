@@ -32,8 +32,7 @@ In order to get a single instance (Standalone Mode) of Keycloak up and running:
 
 
 The buildpack has support to automatically deploy Service Provider Interfaces (SPI's,
-*Keycloak extensions or plugins*) just by creating a `spi` folder in the application root
-and moving jars into it. When the application starts, WildFly will load these 
+*Keycloak extensions or plugins*). There needs to be a `spis` directory in the application root and the jars need to match this linux file pattern to be found: `spis/*/target/libs/*.jar`. When the application starts, WildFly will load these 
 Keycloak plugins and they will be available in the application.
 
 For extra documentation ...
