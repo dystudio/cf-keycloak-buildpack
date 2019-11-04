@@ -27,9 +27,11 @@ In order to get a single instance (Standalone Mode) of Keycloak up and running:
     env:
         KEYCLOAK_USER: admin
         KEYCLOAK_ADMIN_PASSWORD: admin
+        PROXY_ADDRESS_FORWARDING: true
     ```
 3. Run `cf push` to get the app running in a random route.
 
+We need the `PROXY_ADDRESS_FORWARDING` environment variable set to be `true`, as in Cloudfoundry the Keycloak app sits behind a load balancer/reverse proxy. This setting tells Keycloak to look at the `X-Forwarded-For` and `X-Forwarded-Proto` HTTP headers to learn which URL the user actually requested in its browser (instead of using the hostname used by the load balancer to reach this Keycloack app instance). See also the [Keycloack docs](https://www.keycloak.org/docs/latest/server_installation/index.html#_setting-up-a-load-balancer-or-proxy) for setting up Keycloak behind a load balancer.
 
 The buildpack has support to automatically deploy Service Provider Interfaces (SPI's,
 *Keycloak extensions or plugins*). There needs to be a `spis` directory in the application root and the jars need to match this linux file pattern to be found: `spis/*/target/libs/*.jar`. When the application starts, WildFly will load these 
