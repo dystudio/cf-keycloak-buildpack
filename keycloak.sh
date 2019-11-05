@@ -26,6 +26,7 @@ if [ -z "$BIND_OPTS" ]; then
 fi
 SYS_PROPS+=" $BIND_OPTS"
 
+SYS_PROPS+=" -Djboss.bind.address.management=0.0.0.0"
 
 ##################################################
 # Copy Keycloak SPI's to JBoss deployment folder #
