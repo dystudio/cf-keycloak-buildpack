@@ -5,7 +5,7 @@ echo ">>Creating user"
 if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_ADMIN_PASSWORD ]; then
     $KEYCLOAK_DIR/bin/add-user-keycloak.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
     # Add user for the management console
-    $KEYCLOAK_DIR/bin/add-user.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD --group PowerUser
+    $KEYCLOAK_DIR/bin/add-user.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD --group SuperUser
 fi
 
 # Todo: Maybe not needed anymore?

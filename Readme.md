@@ -111,7 +111,7 @@ The result should contains as many instances as you declare:
 In general you can use `jboss-cli` to perform actions and retrieve information:
 
 ```
-boss-cli.sh
+jboss-cli.sh
 You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.
 [disconnected /] connect
 [standalone@localhost:9990 /] help
