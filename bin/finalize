@@ -32,11 +32,9 @@ export JAVA_HOME="${OPENJDK_DIR}"
 ###
 cd "${KEYCLOAK_DIR}"
 
-# Todo: We can remove the standalone configuration, no? We only need standalone-ha?
-
-# echo ">Running standalone-configuration"
-# bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-configuration.cli
-# rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
+echo ">Running standalone-configuration"
+bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-configuration.cli
+rm -rf ${KEYCLOAK_DIR}/standalone/configuration/standalone_xml_history
 
 echo ">Running standalone-ha-configuration"
 bin/jboss-cli.sh --file=${BUILDPACK_DIR}/cli/standalone-ha-configuration.cli
