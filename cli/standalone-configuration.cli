@@ -2,5 +2,5 @@ embed-server --server-config=standalone.xml --std-out=echo
 run-batch --file=${env.BUILDPACK_DIR}/cli/proxy.cli
 run-batch --file=${env.BUILDPACK_DIR}/cli/hostname.cli
 run-batch --file=${env.BUILDPACK_DIR}/cli/loglevel.cli
-run-batch --file=${env.BUILDPACK_DIR}/cli/inet-addresses.cli
+run-batch --file=${env.BUILDPACK_DIR}/cli/management-address.cli
 stop-embedded-server
