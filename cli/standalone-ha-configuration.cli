@@ -2,4 +2,5 @@ embed-server --server-config=standalone-ha.xml --std-out=echo
 run-batch --file=${env.BUILDPACK_DIR}/cli/proxy.cli
 run-batch --file=${env.BUILDPACK_DIR}/cli/hostname.cli
 run-batch --file=${env.BUILDPACK_DIR}/cli/loglevel.cli
+run-batch --file=${env.BUILDPACK_DIR}/cli/inet-addresses.cli
 stop-embedded-server

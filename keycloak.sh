@@ -11,25 +11,6 @@ fi
 # Todo: Maybe not needed anymore?
 SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 
-########################
-# JGroups bind options #
-########################
-
-# Todo: Simply these lines of code. We can just always set the ip from 'hostname --all-ip-addresses'
-# No need to do checks
-if [ -z "$BIND" ]; then
-    BIND=$(hostname --all-ip-addresses)
-fi
-if [ -z "$BIND_OPTS" ]; then
-    for BIND_IP in $BIND
-    do
-        BIND_OPTS+=" -Djboss.bind.address=$BIND_IP -Djboss.bind.address.private=$BIND_IP "
-    done
-fi
-SYS_PROPS+=" $BIND_OPTS"
-
-SYS_PROPS+=" -Djboss.bind.address.management=0.0.0.0"
-
 ##################################################
 # Copy Keycloak SPI's to JBoss deployment folder #
 ##################################################
