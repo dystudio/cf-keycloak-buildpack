@@ -39,6 +39,16 @@ if [ -d "/home/vcap/app/spis" ]; then
     cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
 
+########################################################
+# Copy startup scripts to JBoss startup-scripts folder #
+########################################################
+
+if [ -d "/home/vcap/app/startup-scripts" ]; then
+    echo ">> Copying startup scripts ."
+    ls startup-scripts/*
+    cp startup-scripts/* "/opt/jboss/startup-scripts/"
+fi
+
 ########################
 # Start JBoss/Keycloak #
 ########################
