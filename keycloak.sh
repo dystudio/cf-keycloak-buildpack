@@ -12,6 +12,7 @@ fi
 
 if [ $METRICS_SPI ]; then
     echo ">>Enabling metrics"
+    export PATH=$PATH:$KEYCLOAK_DIR/../jdk/bin/java
     $KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
 fi
 
