@@ -11,6 +11,7 @@ else
 fi
 
 if [ $METRICS_SPI ]; then
+    echo ">>Enabling metrics"
     $KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
 fi
 
