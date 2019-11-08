@@ -10,6 +10,10 @@ else
     echo "WARNING: You have not set any Keycloak or Wildfly admin user credentials, so you will not be able to log in as admin to either system."
 fi
 
+if [ $METRICS_SPI ]; then
+    $KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
+fi
+
 # Todo: Maybe not needed anymore?
 SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 
@@ -37,16 +41,6 @@ if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying SPIs."
     ls spis/*/target/libs/*.jar
     cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
-fi
-
-########################################################
-# Copy startup scripts to JBoss startup-scripts folder #
-########################################################
-
-if [ -d "/home/vcap/app/startup-scripts" ]; then
-    echo ">> Copying startup scripts ."
-    ls startup-scripts/*
-    cp startup-scripts/* "/opt/jboss/startup-scripts/"
 fi
 
 ########################
