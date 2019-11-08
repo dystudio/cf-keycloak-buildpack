@@ -10,13 +10,6 @@ else
     echo "WARNING: You have not set any Keycloak or Wildfly admin user credentials, so you will not be able to log in as admin to either system."
 fi
 
-if [ $METRICS_SPI ]; then
-    echo ">>Enabling metrics"
-    export PATH=$PATH:$KEYCLOAK_DIR/../jdk/bin
-    $KEYCLOAK_DIR/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
-    $KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
-fi
-
 # Todo: Maybe not needed anymore?
 SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 
