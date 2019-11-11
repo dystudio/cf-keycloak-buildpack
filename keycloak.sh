@@ -35,8 +35,8 @@ SYS_PROPS+=" $BIND_OPTS"
 # A 'spis' directory is expected as part of the CF app being deployed
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying SPIs."
-    ls spis/*/target/libs/*.jar
-    cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
+    ls /home/vcap/app/spis/*/target/libs/*.jar
+    cp /home/vcap/app/spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
 
 ########################
