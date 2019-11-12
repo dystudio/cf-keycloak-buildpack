@@ -114,9 +114,6 @@ Cloudfoundry has support for this type of clustering discovery protocol by using
 internal routes to all running applications: https://docs.cloudfoundry.org/devguide/deploy-apps/routes-domains.html#internal-routes
 These internal routes will be in a `.internal` domain.
 
-*As on October 2019 we have not enabled internal routers in our CloudFoundry platforms.*
-
-
 ### JDBC_PING: http://www.jgroups.org/manual4/index.html#_jdbc_ping
 
 JDBC_PING uses a database to store information about cluster nodes used for discovery.
