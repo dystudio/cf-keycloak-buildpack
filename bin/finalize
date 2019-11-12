@@ -92,6 +92,11 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
 fi
 ###
 
+### Install metrics spi
+mkdir ${KEYCLOAK_DIR}/providers
+mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/providers
+###
+
 mkdir -p "$BUILD_DIR/.profile.d"
 # Making sure the environment Keycloak will be run from contains the correct variables.
 cat <<EOF > "$BUILD_DIR/.profile.d/0010_keycloak.sh"
