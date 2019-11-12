@@ -112,6 +112,9 @@ download "keycloak" "keycloak-${KEYCLOAK_VERSION}.tar.gz" "${KEYCLOAK_DOWNLOAD_U
 METRICS_SPI_DOWNLOAD_URL="https://${ARTIFACTORY_URL}/springernature/identity-buildpack-local/org/jboss/aerogear/${METRICS_SPI_VERSION}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar"
 download "keycloak-metrics-spi" "keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar" "${METRICS_SPI_DOWNLOAD_URL}"
 
+JBOSS_LOGMANAGER_EXT_URL="https://${ARTIFACTORY_URL}/springernature/identity-buildpack-local/org/jboss/logmanager/1.0.0.Alpha5/jboss-logmanager-ext-1.0.0.Alpha5.jar"
+download "jboss-logmanager-ext" "jboss-logmanager-ext-1.0.0.Alpha5.jar" "${JBOSS_LOGMANAGER_EXT_URL}"
+
 # NOT using the Java buldpack because, A) We want to control the Java version to keep it the same as that specified in
 # the Keycloak Docker image and B) because if you use the Java buildpack it has to be the last one in the buildpack
 # 'chain' and that would stop us from having Keycloak as the last buildpack, which would stop us from running Keycloak.
