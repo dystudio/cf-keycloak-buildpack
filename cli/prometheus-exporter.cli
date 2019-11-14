@@ -1,7 +1,7 @@
 embed-server --server-config=standalone-ha.xml --std-out=echo
 # Define /metrics proxy to /auth/realms/master/metrics
 /subsystem=undertow/configuration=handler/reverse-proxy=prometheus-exporter:add()
-/subsystem=undertow/configuration=handler/reverse-proxy=prometheus-exporter/host=default-host:add(name=localhost, outbound-socket-binding=http-metrics-exporter, scheme=http, instance-id=metrics, path="/auth/realms/master/metrics")
+/subsystem=undertow/configuration=handler/reverse-proxy=prometheus-exporter/host=default-host:add(outbound-socket-binding=http-metrics-exporter, scheme=http, instance-id=metrics, path="/auth/realms/master/metrics")
 /socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=http-metrics-exporter:add(host=localhost, port=8080)
 /subsystem=undertow/server=default-server/host=default-host/location=\/metrics:add(handler=prometheus-exporter)
 stop-embedded-server
