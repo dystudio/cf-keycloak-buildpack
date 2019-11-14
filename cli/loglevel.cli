@@ -7,7 +7,3 @@
 /subsystem=logging/periodic-rotating-file-handler=FILE:remove
 
 /subsystem=logging/console-handler=CONSOLE:undefine-attribute(name=level)
-
-/subsystem=logging/custom-formatter=logstash:add(class=org.jboss.logmanager.ext.formatters.LogstashFormatter, module=org.jboss.logmanager.ext)
-/subsystem=logging/periodic-rotating-file-handler=logstash:add(named-formatter=logstash, file={relative-to=jboss.server.log.dir, path=server.log.json}, append=true, enabled=true, autoflush=true, suffix=.yyyy-MM-dd, level=ALL)
-/subsystem=logging/root-logger=ROOT:add-handler(name=logstash)
