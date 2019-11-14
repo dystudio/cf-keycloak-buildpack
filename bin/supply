@@ -120,7 +120,7 @@ download "keycloak-metrics-spi" "keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar
 JBOSS_LOGMANAGER_EXT_URL="https://${ARTIFACTORY_URL}/springernature/identity-buildpack-local/org/jboss/logmanager/1.0.0.Alpha5/jboss-logmanager-ext-1.0.0.Alpha5.jar"
 download "jboss-logmanager-ext" "jboss-logmanager-ext-1.0.0.Alpha5.jar" "${JBOSS_LOGMANAGER_EXT_URL}"
 ### Move jboss-logmanager-ext to destination folder
-mv ${CACHE_DIR}/jboss-logmanager-ext-1.0.0.Alpha5.jar ${BUILD_DIR}/cli
+mv ${CACHE_DIR}/jboss-logmanager-ext-1.0.0.Alpha5.jar /tmp/buildpackdownloads/14b838238995da72d09b2fa1cbad2eba/cli/cli
 ###
 
 # NOT using the Java buldpack because, A) We want to control the Java version to keep it the same as that specified in
