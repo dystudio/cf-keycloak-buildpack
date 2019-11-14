@@ -92,10 +92,18 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
 fi
 ###
 
-### Install metrics spi
-mkdir ${KEYCLOAK_DIR}/providers
-mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/providers
-###
+# We allow other providers defined in the app folder, not only the metrics one
+mkdir -p "$BUILD_DIR/providers"
+ln -sf "$BUILD_DIR/providers" "${KEYCLOAK_DIR}/providers"
+
+### Install metrics spi: prometheus exporter
+if [ "$METRICS_SPI_DOWNLOAD_URL" ] && [ "$METRICS_SPI_VERSION" ]
+then
+    mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar $BUILD_DIR/providers
+    # Proxy to /metrics > /auth/realms/master/metrics
+    $KEYCLOAK_DIR/bin/jboss-cli.sh --file="${BUILDPACK_DIR}/cli/prometheus-exporter.cli"
+fi
+
 
 mkdir -p "$BUILD_DIR/.profile.d"
 # Making sure the environment Keycloak will be run from contains the correct variables.
