@@ -97,11 +97,6 @@ mkdir ${KEYCLOAK_DIR}/providers
 mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/providers
 ###
 
-### Move jboss-logmanager-ext to destination folder
-mkdir ${KEYCLOAK_DIR}/logmanager
-mv ${CACHE_DIR}/jboss-logmanager-ext-1.0.0.Alpha5.jar /tmp/buildpackdownloads/14b838238995da72d09b2fa1cbad2eba/cli
-###
-
 mkdir -p "$BUILD_DIR/.profile.d"
 # Making sure the environment Keycloak will be run from contains the correct variables.
 cat <<EOF > "$BUILD_DIR/.profile.d/0010_keycloak.sh"
