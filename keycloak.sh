@@ -39,6 +39,14 @@ if [ -d "/home/vcap/app/spis" ]; then
     cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
 
+####################
+# Enabling metrics #
+####################
+echo ">>Enabling metrics"
+export PATH=$PATH:$KEYCLOAK_DIR/../jdk/bin
+$KEYCLOAK_DIR/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
+$KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
+
 ########################
 # Start JBoss/Keycloak #
 ########################
@@ -46,10 +54,5 @@ fi
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
 $KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS -b 0.0.0.0
 STANDALONE_RESULT=$?
-
-echo ">>Enabling metrics"
-export PATH=$PATH:$KEYCLOAK_DIR/../jdk/bin
-$KEYCLOAK_DIR/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
-$KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
 
 exit $STANDALONE_RESULT
