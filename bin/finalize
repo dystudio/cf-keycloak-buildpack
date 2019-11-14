@@ -98,7 +98,7 @@ mkdir -p "$BUILD_DIR/providers"
 ln -sf "$BUILD_DIR/providers" "${KEYCLOAK_DIR}/providers"
 
 ### Install metrics spi: prometheus exporter
-if [ "$METRICS_SPI_DOWNLOAD_URL" ] && [ "$METRICS_SPI_VERSION" ]
+if [ "$METRICS_SPI_VERSION" ]
 then
     mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar $BUILD_DIR/providers
     # Proxy to /metrics > /auth/realms/master/metrics
