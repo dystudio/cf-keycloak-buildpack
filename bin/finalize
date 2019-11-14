@@ -93,8 +93,8 @@ fi
 ###
 
 ### Install metrics spi
-mkdir ${KEYCLOAK_DIR}/standalone/providers
-mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/standalone/providers
+mkdir ${KEYCLOAK_DIR}/standalone/deployments
+mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/standalone/deployments
 ###
 
 mkdir -p "$BUILD_DIR/.profile.d"
