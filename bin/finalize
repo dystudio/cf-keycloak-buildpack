@@ -92,6 +92,7 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
 fi
 ###
 
+
 # We allow other providers defined in the app folder, not only the metrics one
 mkdir -p "$BUILD_DIR/providers"
 ln -sf "$BUILD_DIR/providers" "${KEYCLOAK_DIR}/providers"
