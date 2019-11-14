@@ -8,7 +8,7 @@
 
 /subsystem=logging/console-handler=CONSOLE:undefine-attribute(name=level)
 
-module add --name=org.jboss.logmanager.ext --dependencies=org.jboss.logmanager,javax.json.api,javax.xml.stream.api --resources=${env.KEYCLOAK_DIR}/logmanager/jboss-logmanager-ext-1.0.0.Alpha5.jar
+module add --name=org.jboss.logmanager.ext --dependencies=org.jboss.logmanager,javax.json.api,javax.xml.stream.api --resources=${env.KEYCLOAK_URL}/logmanager/jboss-logmanager-ext-1.0.0.Alpha5.jar
 /subsystem=logging/custom-formatter=logstash:add(class=org.jboss.logmanager.ext.formatters.LogstashFormatter, module=org.jboss.logmanager.ext)
 /subsystem=logging/periodic-rotating-file-handler=logstash:add(named-formatter=logstash, file={relative-to=jboss.server.log.dir, path=server.log.json}, append=true, enabled=true, autoflush=true, suffix=.yyyy-MM-dd, level=ALL)
 /subsystem=logging/root-logger=ROOT:add-handler(name=logstash)
