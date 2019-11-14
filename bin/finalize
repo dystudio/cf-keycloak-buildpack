@@ -99,7 +99,7 @@ mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/
 
 ### Move jboss-logmanager-ext to destination folder
 mkdir ${KEYCLOAK_DIR}/logmanager
-mv ${CACHE_DIR}/jboss-logmanager-ext-1.0.0.5Alpha.jar ${KEYCLOAK_DIR}/modules/system/layers/base/org/jboss/logmanager/
+mv ${CACHE_DIR}/jboss-logmanager-ext-1.0.0.Alpha5.jar ${KEYCLOAK_DIR}/modules/system/layers/base/org/jboss/logmanager/
 ###
 
 mkdir -p "$BUILD_DIR/.profile.d"
