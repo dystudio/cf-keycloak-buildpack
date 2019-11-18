@@ -50,9 +50,12 @@ fi
 ########################
 # Start JBoss/Keycloak #
 ########################
+if [ $KEYCLOAK_IMPORT ]; then
+    IMPORT_CONFIG=" -Dkeycloak.import=$KEYCLOAK_IMPORT"
+fi
 
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
-$KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS -b 0.0.0.0
+$KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS $IMPORT_CONFIG -b 0.0.0.0
 STANDALONE_RESULT=$?
 
 exit $STANDALONE_RESULT
