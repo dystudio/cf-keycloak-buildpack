@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+export BUILD_DIR=$(cd "$1/" && pwd)
+
 echo ">>Creating user"
 if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_ADMIN_PASSWORD ] && [ $WILDFLY_ADMIN_USER ] && [ $WILDFLY_ADMIN_PASSWORD ]; then
     $KEYCLOAK_DIR/bin/add-user-keycloak.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
@@ -51,7 +53,7 @@ fi
 # Start JBoss/Keycloak #
 ########################
 if [ $KEYCLOAK_IMPORT ]; then
-    IMPORT_CONFIG=" -Dkeycloak.import=$KEYCLOAK_IMPORT"
+    IMPORT_CONFIG=" -Dkeycloak.import=${BUILD_DIR}/${KEYCLOAK_IMPORT}"
 fi
 
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
