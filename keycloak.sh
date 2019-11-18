@@ -53,7 +53,7 @@ fi
 # Start JBoss/Keycloak #
 ########################
 if [ $KEYCLOAK_IMPORT ]; then
-    IMPORT_CONFIG=" -Dkeycloak.import=${BUILD_DIR}/${KEYCLOAK_IMPORT}"
+    IMPORT_CONFIG=" -Dkeycloak.migration.strategy=OVERWRITE_EXISTING -Dkeycloak.import=${BUILD_DIR}/${KEYCLOAK_IMPORT}"
 fi
 
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
