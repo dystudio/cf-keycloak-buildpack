@@ -18,7 +18,6 @@ SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 ########################
 # JGroups bind options #
 ########################
-
 BIND=$(hostname --all-ip-addresses)
 
 for BIND_IP in $BIND
@@ -33,21 +32,12 @@ SYS_PROPS+=" $BIND_OPTS"
 ##################################################
 # Copy Keycloak SPI's to JBoss deployment folder #
 ##################################################
-
 # A 'spis' directory is expected as part of the CF app being deployed
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying SPIs."
     ls spis/*/target/libs/*.jar
     cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
-
-####################
-# Enabling metrics #
-####################
-#echo ">>Enabling metrics"
-#export PATH=$PATH:$KEYCLOAK_DIR/../jdk/bin
-#$KEYCLOAK_DIR/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
-#$KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
 
 ########################
 # Start JBoss/Keycloak #
@@ -58,6 +48,3 @@ fi
 
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
 $KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS $IMPORT_CONFIG -b 0.0.0.0
-STANDALONE_RESULT=$?
-
-exit $STANDALONE_RESULT
