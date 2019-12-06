@@ -1,0 +1,11 @@
+embed-server --server-config=standalone-ha.xml --std-out=echo
+# WARNING, this setting depends on sticky sessions for CF using JSESSIONID cookie!!!
+# Apply: sticky-sessions-JSESSIONID.cli
+#/subsystem=undertow/configuration=filter/expression-filter=instance-cookie:add(expression="set(attribute='%{c,instance}', value='%{i,X-Cf-Instanceindex}')")
+#/subsystem=undertow/server=default-server/host=default-host/filter-ref=instance-cookie:add()
+/subsystem=undertow/configuration=filter/expression-filter=consoleindexproxy:add(expression="regex(pattern='^/consoleindex/(.*)/(.*)$', value='%U', full-match=true) -> { rewrite('/console/$2'); set(attribute='%{c,console}',value='$1'); set(attribute='%{i,Origin}',value='http://%{i,Host}'); reverse-proxy({'http://localhost:9990'}); }")
+/subsystem=undertow/configuration=handler/reverse-proxy=consoleindexproxy:add()
+/subsystem=undertow/server=default-server/host=default-host/location=\/consoleindex:add(handler=consoleindexproxy)
+/subsystem=undertow/server=default-server/host=default-host/location=\/consoleindex/filter-ref=consoleindexproxy:add()
+# TODO: use url params instead of routes (context) to properly setup the cookie
+stop-embedded-server
