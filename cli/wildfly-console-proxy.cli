@@ -1,0 +1,21 @@
+embed-server --server-config=standalone-ha.xml --std-out=echo
+# Disable default /console redirect in wildfly/undertow
+/subsystem=undertow/server=default-server/host=default-host:write-attribute(name=disable-console-redirect, value=true)
+# Create an outbound sockect binding pointing to management console
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=console:add(host=localhost, port=9990)
+# Define reverse proxy for /console using the outbound socket
+/subsystem=undertow/configuration=handler/reverse-proxy=console:add()
+/subsystem=undertow/configuration=handler/reverse-proxy=console/host=cf-keycloak2-funny-nyala.springernature.app:add(outbound-socket-binding=console, scheme=http, instance-id="wildfly-consoleid", path="/console")
+/subsystem=undertow/server=default-server/host=default-host/location=\/console:add(handler=console)
+# Define reverse proxy for /management using the outbound socket
+/subsystem=undertow/configuration=handler/reverse-proxy=management:add()
+/subsystem=undertow/configuration=handler/reverse-proxy=management/host=cf-keycloak2-funny-nyala.springernature.app:add(outbound-socket-binding=console, scheme=http, instance-id="wildfly-managementid", path="/management")
+/subsystem=undertow/server=default-server/host=default-host/location=\/management:add(handler=management)
+# Define reverse proxy for /keycloak using the outbound socket??
+/subsystem=undertow/configuration=handler/reverse-proxy=keycloak:add()
+/subsystem=undertow/configuration=handler/reverse-proxy=keycloak/host=cf-keycloak2-funny-nyala.springernature.app:add(outbound-socket-binding=console, scheme=http, instance-id="wildfly-keycloackid", path="/keycloak")
+/subsystem=undertow/server=default-server/host=default-host/location=\/keycloak:add(handler=keycloak)
+# Origin header has to be equal to host header, otherwise requests will be rejected, this filter makes it possible.
+/subsystem=undertow/configuration=filter/expression-filter=origin-eq-host:add(expression="set(attribute='%{i,Origin}', value='http://%{i,Host}')")
+/subsystem=undertow/server=default-server/host=default-host/location=\/management/filter-ref=origin-eq-host:add()
+stop-embedded-server
