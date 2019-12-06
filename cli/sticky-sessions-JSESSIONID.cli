@@ -1,0 +1,9 @@
+embed-server --server-config=standalone-ha.xml --std-out=echo
+# sticky sessions for CF using JSESSIONID cookie
+# https://docs.cloudfoundry.org/concepts/http-routing.html#sessions
+# Cookie is set to the instance index of the application, which helps to check if it is working by checking its value. Probably
+# it needs to be improved to create a long string helping to create a better hash in the gorouter.
+# It is a session cookie, all clients with the cookie will be proxied to the same instance (if available!).
+/subsystem=undertow/configuration=filter/expression-filter=sticky-cookie:add(expression="set(attribute='%{c,JSESSIONID}', value='%{i,X-Cf-Instanceindex}')")
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=sticky-cookie:add()
+stop-embedded-server
