@@ -1,0 +1,5 @@
+embed-server --server-config=standalone-ha.xml --std-out=echo
+# Enable dump all requests to stdout
+/subsystem=undertow/configuration=filter/expression-filter=requestDump:add(expression="dump-request")
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=requestDump:add()
+stop-embedded-server
