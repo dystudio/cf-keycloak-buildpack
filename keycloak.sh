@@ -47,7 +47,7 @@ fi
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying password backlists."
     ls keycloak-config/blacklist/*.txt
-    cp keycloak-config/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists"
+    cp keycloak-config/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists/"
 fi
 
 
