@@ -45,6 +45,10 @@ fi
 
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying password backlists."
+    echo ">> Current path:"
+    pwd
+    echo ">> Current directory content:"
+    ls -al
     ls spis/*/blacklist/*.txt
     cp spis/*/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists"
 fi
