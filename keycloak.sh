@@ -29,6 +29,7 @@ SYS_PROPS+=" $BIND_OPTS"
 
 #SYS_PROPS+=" -Djboss.bind.address.management=0.0.0.0"
 
+
 ##################################################
 # Copy Keycloak SPI's to JBoss deployment folder #
 ##################################################
@@ -39,27 +40,16 @@ if [ -d "/home/vcap/app/spis" ]; then
     cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
 fi
 
+
 ##################################################
 # Copy password blacklists to the right folder #
 ##################################################
-
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying password backlists."
-    echo ">> Current path:"
-    pwd
-    echo ">> Current directory content:"
-    ls -al
-    ls spis/*/blacklist/*.txt
-    cp spis/*/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists"
+    ls keycloak-config/blacklist/*.txt
+    cp keycloak-config/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists"
 fi
 
-####################
-# Enabling metrics #
-####################
-#echo ">>Enabling metrics"
-#export PATH=$PATH:$KEYCLOAK_DIR/../jdk/bin
-#$KEYCLOAK_DIR/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
-#$KEYCLOAK_DIR/bin/kcadm.sh update events/config -s "eventsEnabled=true" -s "adminEventsEnabled=true" -s "eventsListeners+=metrics-listener"
 
 ########################
 # Start JBoss/Keycloak #
