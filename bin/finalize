@@ -87,7 +87,7 @@ if [ $JGROUPS_DISCOVERY_PROTOCOL ]; then
     echo "set keycloak_jgroups_discovery_protocol_properties=${JGROUPS_DISCOVERY_PROPERTIES}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     echo "set keycloak_jgroups_transport_stack=${JGROUPS_TRANSPORT_STACK:-tcp}" >> "$KEYCLOAK_DIR/bin/.jbossclirc"
     
-    echo ">>>Run jboss-cli"
+    echo ">>>Run jboss-cli for jgroups discovery"
     $KEYCLOAK_DIR/bin/jboss-cli.sh --file="${BUILDPACK_DIR}/cli/jgroups/discovery/default.cli"
 fi
 ###
@@ -102,6 +102,7 @@ if [ "$METRICS_SPI_VERSION" ]
 then
     mv ${CACHE_DIR}/keycloak-metrics-spi-${METRICS_SPI_VERSION}.jar ${KEYCLOAK_DIR}/standalone/deployments
     # Proxy to /metrics > /auth/realms/master/metrics
+    echo ">>>Run jboss-cli to set up Prometheus"
     $KEYCLOAK_DIR/bin/jboss-cli.sh --file="${BUILDPACK_DIR}/cli/prometheus-exporter.cli"
 fi
 
