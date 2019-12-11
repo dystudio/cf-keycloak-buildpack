@@ -27,8 +27,6 @@ done
 
 SYS_PROPS+=" $BIND_OPTS"
 
-#SYS_PROPS+=" -Djboss.bind.address.management=0.0.0.0"
-
 
 ##################################################
 # Copy Keycloak SPI's to JBoss deployment folder #
@@ -44,10 +42,20 @@ fi
 ##################################################
 # Copy password blacklists to the right folder #
 ##################################################
-if [ -d "/home/vcap/app/spis" ]; then
+if [ -d "/home/vcap/app/keycloak-config/blacklist" ]; then
     echo ">> Copying password backlists."
     ls keycloak-config/blacklist/*.txt
     cp keycloak-config/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists/"
+fi
+
+
+##################################################
+# Copy JBoss startup scripts                     #
+##################################################
+if [ -d "/home/vcap/app/startup-scripts-qa" ]; then
+    echo ">> Copying JBoss startup scripts."
+    ls startup-scripts-qa/*
+    cp -r startup-scripts-qa "$KEYCLOAK_DIR/../startup-scripts"
 fi
 
 
@@ -57,6 +65,7 @@ fi
 if [ $KEYCLOAK_IMPORT ]; then
     IMPORT_CONFIG=" -Dkeycloak.import=${BUILD_DIR}/${KEYCLOAK_IMPORT}"
 fi
+
 
 echo ">>Executing standalone.sh -c=standalone-ha.xml $SYS_PROPS $@"
 $KEYCLOAK_DIR/bin/standalone.sh -c=standalone-ha.xml $SYS_PROPS $IMPORT_CONFIG -b 0.0.0.0
