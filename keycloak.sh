@@ -44,8 +44,8 @@ fi
 ##################################################
 if [ -d "/home/vcap/app/keycloak-config/blacklist" ]; then
     echo ">> Copying password backlists."
-    ls keycloak-config/blacklist/*.txt
-    cp keycloak-config/blacklist/*.txt "$KEYCLOAK_DIR/standalone/data/password-blacklists/"
+    ls keycloak-config/blacklist
+    cp -a keycloak-config/blacklist/. "$KEYCLOAK_DIR/standalone/data/password-blacklists"
 fi
 
 
