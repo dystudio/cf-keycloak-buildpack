@@ -7,7 +7,7 @@ export BUILD_DIR=$(cd "$1/" && pwd)
 # This is what runs the startup-scripts for docker.
 STARTUP_SCRIPTS_DIR=${BUILD_DIR}/deps/0/startup-scripts
 
-echo ">>Looking for startup scripts..."
+echo ">>Looking for startup scripts in ${STARTUP_SCRIPTS_DIR}..."
 if [[ -d "$STARTUP_SCRIPTS_DIR" ]]; then
   # First run cli autoruns
   for f in "$STARTUP_SCRIPTS_DIR"/*; do
