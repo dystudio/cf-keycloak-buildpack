@@ -3,6 +3,25 @@ set -e
 
 export BUILD_DIR=$(cd "$1/" && pwd)
 
+# Copy of autorun.sh script form the Keycloak docker image.
+# This is what runs the startup-scripts for docker.
+STARTUP_SCRIPTS_DIR=${BUILD_DIR}/deps/0/startup-scripts
+
+if [[ -d "$STARTUP_SCRIPTS_DIR" ]]; then
+  # First run cli autoruns
+  for f in "$STARTUP_SCRIPTS_DIR"/*; do
+    if [[ "$f" == *.cli ]]; then
+      echo "Executing cli script: $f"
+      bin/jboss-cli.sh --file="$f"
+    elif [[ -x "$f" ]]; then
+      echo "Executing: $f"
+      "$f"
+    else
+      echo "Ignoring file in $STARTUP_SCRIPTS_DIR (not *.cli or executable): $f"
+    fi
+  done
+fi
+
 echo ">>Creating user"
 if [ $KEYCLOAK_USER ] && [ $KEYCLOAK_ADMIN_PASSWORD ] && [ $WILDFLY_ADMIN_USER ] && [ $WILDFLY_ADMIN_PASSWORD ]; then
     $KEYCLOAK_DIR/bin/add-user-keycloak.sh --user $KEYCLOAK_USER --password $KEYCLOAK_ADMIN_PASSWORD
