@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
+# TODO Do we need it? Doens't seem to work anyway.
 export BUILD_DIR=$(cd "$1/" && pwd)
 
 # Copy of autorun.sh script form the Keycloak docker image.
 # This is what runs the startup-scripts for docker.
-STARTUP_SCRIPTS_DIR=${BUILD_DIR}/deps/0/startup-scripts
+STARTUP_SCRIPTS_DIR=/home/vcap/deps/0/startup-scripts
 
-echo ">>Looking for startup scripts in ${STARTUP_SCRIPTS_DIR}..."
+echo ">>Looking for startup scripts in ${STARTUP_SCRIPTS_DIR}"
 if [[ -d "$STARTUP_SCRIPTS_DIR" ]]; then
   # First run cli autoruns
   for f in "$STARTUP_SCRIPTS_DIR"/*; do
