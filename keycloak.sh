@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# TODO Do we need it? Doens't seem to work anyway.
 export BUILD_DIR=$(cd "$1/" && pwd)
 
 ##################################################
@@ -82,6 +81,7 @@ fi
 
 ########################
 # Start JBoss/Keycloak #
+# By using this it's possible to load realms but it won't override the existing ones.
 ########################
 if [ $KEYCLOAK_IMPORT ]; then
     IMPORT_CONFIG=" -Dkeycloak.import=${BUILD_DIR}/${KEYCLOAK_IMPORT}"
