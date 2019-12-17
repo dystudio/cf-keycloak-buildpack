@@ -113,7 +113,7 @@ cat <<EOF > "$BUILD_DIR/.profile.d/0010_keycloak.sh"
 export TMPDIR=/home/vcap/tmp
 
 export KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
-export KEYCLOAK_DIR="/home/vcap/deps/${DEPS_IDX}/keycloak"
+export KEYCLOAK_DIR=${KEYCLOAK_DIR}
 
-export JAVA_HOME="/home/vcap/deps/${DEPS_IDX}/jdk"
+export JAVA_HOME=${OPENJDK_DIR}
 EOF

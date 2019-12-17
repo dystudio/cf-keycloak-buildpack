@@ -6,10 +6,10 @@ export BUILD_DIR=$(cd "$1/" && pwd)
 ##################################################
 # Copy JBoss startup scripts                     #
 ##################################################
-if [ -d "/home/vcap/app/startup-scripts-qa" ]; then
+if [ -d "/home/vcap/app/startup-scripts" ]; then
     echo ">> Copying JBoss startup scripts."
-    ls startup-scripts-qa/*
-    cp -r startup-scripts-qa "$KEYCLOAK_DIR/../startup-scripts"
+    ls startup-scripts/*
+    cp -r startup-scripts "$KEYCLOAK_DIR/../startup-scripts"
 fi
 
 # Copy of autorun.sh script form the Keycloak docker image.
