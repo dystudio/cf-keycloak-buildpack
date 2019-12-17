@@ -3,19 +3,14 @@ set -e
 
 export BUILD_DIR=$(cd "$1/" && pwd)
 
-##################################################
-# Copy JBoss startup scripts                     #
-##################################################
-if [ -d "/home/vcap/app/startup-scripts" ]; then
-    echo ">> Copying JBoss startup scripts."
-    ls startup-scripts/*
-    cp -r startup-scripts "$KEYCLOAK_DIR/../startup-scripts"
-fi
 
-# Copy of autorun.sh script form the Keycloak docker image.
+##################################################
+# Run Keycloak configuration scripts             #
+##################################################
+STARTUP_SCRIPTS_DIR=${STARTUP_SCRIPTS_ROOT}/startup-scripts
+
+# Copy of autorun.sh script from the Keycloak docker image.
 # This is what runs the startup-scripts for docker.
-STARTUP_SCRIPTS_DIR=/home/vcap/deps/0/startup-scripts
-
 echo ">>Looking for startup scripts in ${STARTUP_SCRIPTS_DIR}"
 # HAH the scripts are here yet, they will be copied over later on
 # Altough how the realm creation works?!?
@@ -46,6 +41,7 @@ fi
 # Todo: Maybe not needed anymore?
 SYS_PROPS=" -Dkeycloak.hostname.fixed.alwaysHttps=false"
 
+
 ########################
 # JGroups bind options #
 ########################
@@ -66,23 +62,24 @@ SYS_PROPS+=" $BIND_OPTS"
 if [ -d "/home/vcap/app/spis" ]; then
     echo ">> Copying SPIs."
     ls spis/*/target/libs/*.jar
-    cp spis/*/target/libs/*.jar "$KEYCLOAK_DIR/standalone/deployments"
+    cp spis/*/target/libs/*.jar "${KEYCLOAK_DIR}/standalone/deployments"
 fi
 
 
-##################################################
+################################################
 # Copy password blacklists to the right folder #
-##################################################
+################################################
 if [ -d "/home/vcap/app/keycloak-config/blacklist" ]; then
     echo ">> Copying password backlists."
     ls keycloak-config/blacklist
-    cp -a keycloak-config/blacklist/. "$KEYCLOAK_DIR/standalone/data/password-blacklists"
+    cp -a keycloak-config/blacklist/. "${KEYCLOAK_DIR}/standalone/data/password-blacklists"
 fi
 
-########################
-# Start JBoss/Keycloak #
-# By using this it's possible to load realms but it won't override the existing ones.
-########################
+
+#######################################################################################
+# Start JBoss/Keycloak                                                                #
+# By using this it's possible to load realms but it won't override the existing ones. #
+#######################################################################################
 if [ $KEYCLOAK_IMPORT ]; then
     IMPORT_CONFIG=" -Dkeycloak.import=${BUILD_DIR}/${KEYCLOAK_IMPORT}"
 fi
