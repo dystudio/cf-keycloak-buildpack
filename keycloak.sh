@@ -4,11 +4,22 @@ set -e
 # TODO Do we need it? Doens't seem to work anyway.
 export BUILD_DIR=$(cd "$1/" && pwd)
 
+##################################################
+# Copy JBoss startup scripts                     #
+##################################################
+if [ -d "/home/vcap/app/startup-scripts-qa" ]; then
+    echo ">> Copying JBoss startup scripts."
+    ls startup-scripts-qa/*
+    cp -r startup-scripts-qa "$KEYCLOAK_DIR/../startup-scripts"
+fi
+
 # Copy of autorun.sh script form the Keycloak docker image.
 # This is what runs the startup-scripts for docker.
 STARTUP_SCRIPTS_DIR=/home/vcap/deps/0/startup-scripts
 
 echo ">>Looking for startup scripts in ${STARTUP_SCRIPTS_DIR}"
+# HAH the scripts are here yet, they will be copied over later on
+# Altough how the realm creation works?!?
 if [[ -d "$STARTUP_SCRIPTS_DIR" ]]; then
   # First run cli autoruns
   for f in "$STARTUP_SCRIPTS_DIR"/*; do
@@ -68,17 +79,6 @@ if [ -d "/home/vcap/app/keycloak-config/blacklist" ]; then
     ls keycloak-config/blacklist
     cp -a keycloak-config/blacklist/. "$KEYCLOAK_DIR/standalone/data/password-blacklists"
 fi
-
-
-##################################################
-# Copy JBoss startup scripts                     #
-##################################################
-if [ -d "/home/vcap/app/startup-scripts-qa" ]; then
-    echo ">> Copying JBoss startup scripts."
-    ls startup-scripts-qa/*
-    cp -r startup-scripts-qa "$KEYCLOAK_DIR/../startup-scripts"
-fi
-
 
 ########################
 # Start JBoss/Keycloak #
