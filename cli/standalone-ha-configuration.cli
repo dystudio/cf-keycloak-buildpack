@@ -1,6 +1,7 @@
 embed-server --server-config=standalone-ha.xml --std-out=echo
-run-batch --file=${env.BUILDPACK_DIR}/cli/loglevel.cli
 run-batch --file=${env.BUILDPACK_DIR}/cli/proxy.cli
 run-batch --file=${env.BUILDPACK_DIR}/cli/hostname.cli
-run-batch --file=${env.BUILDPACK_DIR}/cli/theme.cli
+run-batch --file=${env.BUILDPACK_DIR}/cli/loglevel.cli
+run-batch --file=${env.BUILDPACK_DIR}/cli/management-address.cli
+run-batch --file=${env.BUILDPACK_DIR}/cli/infinispan/cache-owners.cli
 stop-embedded-server
