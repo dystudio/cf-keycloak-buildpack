@@ -3,6 +3,26 @@ set -e
 
 export BUILD_DIR=$(cd "$1/" && pwd)
 
+##################################################
+# Copy Keycloak SPI's to JBoss deployment folder #
+##################################################
+# A 'spis' directory is expected as part of the CF app being deployed
+if [ -d "/home/vcap/app/spis" ]; then
+    echo ">> Copying SPIs."
+    ls spis/*/target/libs/*.jar
+    cp spis/*/target/libs/*.jar "${KEYCLOAK_DIR}/standalone/deployments"
+fi
+
+
+################################################
+# Copy password blacklists to the right folder #
+################################################
+if [ -d "/home/vcap/app/keycloak-config/blacklist" ]; then
+    echo ">> Copying password blacklists."
+    ls keycloak-config/blacklist
+    cp -a keycloak-config/blacklist/. "${KEYCLOAK_DIR}/standalone/data/password-blacklists"
+fi
+
 
 ##################################################
 # Run Keycloak configuration scripts             #
@@ -53,27 +73,6 @@ do
 done
 
 SYS_PROPS+=" $BIND_OPTS"
-
-
-##################################################
-# Copy Keycloak SPI's to JBoss deployment folder #
-##################################################
-# A 'spis' directory is expected as part of the CF app being deployed
-if [ -d "/home/vcap/app/spis" ]; then
-    echo ">> Copying SPIs."
-    ls spis/*/target/libs/*.jar
-    cp spis/*/target/libs/*.jar "${KEYCLOAK_DIR}/standalone/deployments"
-fi
-
-
-################################################
-# Copy password blacklists to the right folder #
-################################################
-if [ -d "/home/vcap/app/keycloak-config/blacklist" ]; then
-    echo ">> Copying password backlists."
-    ls keycloak-config/blacklist
-    cp -a keycloak-config/blacklist/. "${KEYCLOAK_DIR}/standalone/data/password-blacklists"
-fi
 
 
 #######################################################################################
